@@ -7,11 +7,16 @@ import { useResume } from '@/context/ResumeContext';
 import ModernTemplate from '@/components/templates/ModernTemplate';
 import ClassicTemplate from '@/components/templates/ClassicTemplate';
 import CreativeTemplate from '@/components/templates/CreativeTemplate';
+import MinimalistTemplate from '@/components/templates/MinimalistTemplate';
+import ExecutiveTemplate from '@/components/templates/ExecutiveTemplate';
+import TechnicalTemplate from '@/components/templates/TechnicalTemplate';
+import ElegantTemplate from '@/components/templates/ElegantTemplate';
+import CompactTemplate from '@/components/templates/CompactTemplate';
 import ExportButtons from '@/components/builder/ExportButtons';
 import { ArrowLeft, Edit } from 'lucide-react';
 
 const Preview = () => {
-  const { resumeData, selectedTemplate } = useResume();
+  const { resumeData, selectedTemplate, fontSettings } = useResume();
 
   const renderTemplate = () => {
     switch (selectedTemplate) {
@@ -21,6 +26,16 @@ const Preview = () => {
         return <ClassicTemplate data={resumeData} />;
       case 'creative':
         return <CreativeTemplate data={resumeData} />;
+      case 'minimalist':
+        return <MinimalistTemplate data={resumeData} />;
+      case 'executive':
+        return <ExecutiveTemplate data={resumeData} />;
+      case 'technical':
+        return <TechnicalTemplate data={resumeData} />;
+      case 'elegant':
+        return <ElegantTemplate data={resumeData} />;
+      case 'compact':
+        return <CompactTemplate data={resumeData} />;
       default:
         return <ModernTemplate data={resumeData} />;
     }
@@ -54,7 +69,25 @@ const Preview = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
             className="bg-background rounded-2xl shadow-xl overflow-hidden"
+            style={{
+              '--resume-heading-font': fontSettings.headingFont,
+              '--resume-body-font': fontSettings.bodyFont,
+            } as React.CSSProperties}
           >
+            <style>{`
+              #resume-content h1, 
+              #resume-content h2, 
+              #resume-content h3, 
+              #resume-content h4 {
+                font-family: var(--resume-heading-font), system-ui, sans-serif !important;
+              }
+              #resume-content p, 
+              #resume-content span, 
+              #resume-content li,
+              #resume-content div:not(:has(h1)):not(:has(h2)):not(:has(h3)):not(:has(h4)) {
+                font-family: var(--resume-body-font), system-ui, sans-serif;
+              }
+            `}</style>
             {renderTemplate()}
           </motion.div>
 
