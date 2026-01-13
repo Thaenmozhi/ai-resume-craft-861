@@ -55,6 +55,36 @@ export interface ResumeData {
 
 export type TemplateType = 'modern' | 'classic' | 'creative' | 'minimalist' | 'executive' | 'technical' | 'elegant' | 'compact';
 
+export interface FontSettings {
+  headingFont: string;
+  bodyFont: string;
+}
+
+export interface SavedResume {
+  id: string;
+  name: string;
+  data: ResumeData;
+  template: TemplateType;
+  fontSettings: FontSettings;
+  savedAt: string;
+}
+
+export const availableFonts = [
+  { value: 'Inter', label: 'Inter (Sans-serif)', category: 'sans-serif' },
+  { value: 'Georgia', label: 'Georgia (Serif)', category: 'serif' },
+  { value: 'Playfair Display', label: 'Playfair Display (Classic)', category: 'serif' },
+  { value: 'Roboto', label: 'Roboto (Modern)', category: 'sans-serif' },
+  { value: 'Lora', label: 'Lora (Elegant)', category: 'serif' },
+  { value: 'Open Sans', label: 'Open Sans (Clean)', category: 'sans-serif' },
+  { value: 'Merriweather', label: 'Merriweather (Traditional)', category: 'serif' },
+  { value: 'Source Sans Pro', label: 'Source Sans Pro (Professional)', category: 'sans-serif' },
+];
+
+export const defaultFontSettings: FontSettings = {
+  headingFont: 'Inter',
+  bodyFont: 'Inter',
+};
+
 export const defaultResumeData: ResumeData = {
   personalInfo: {
     fullName: '',

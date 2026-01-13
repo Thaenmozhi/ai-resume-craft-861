@@ -3,6 +3,7 @@ import { TemplateType } from '@/types/resume';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import FontSelector from './FontSelector';
 
 const templates: { type: TemplateType; name: string; description: string; gradient: string }[] = [
   {
@@ -117,6 +118,9 @@ const TemplateSelector = () => {
           </motion.button>
         ))}
       </div>
+      
+      {/* Font Customization */}
+      <FontSelector />
     </motion.div>
   );
 };
