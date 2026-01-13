@@ -53,7 +53,7 @@ export interface ResumeData {
   certifications: Certification[];
 }
 
-export type TemplateType = 'modern' | 'classic' | 'creative';
+export type TemplateType = 'modern' | 'classic' | 'creative' | 'minimalist' | 'executive' | 'technical' | 'elegant' | 'compact';
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {

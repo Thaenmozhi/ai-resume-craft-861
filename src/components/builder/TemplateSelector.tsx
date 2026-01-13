@@ -23,6 +23,36 @@ const templates: { type: TemplateType; name: string; description: string; gradie
     description: 'Bold and distinctive style',
     gradient: 'from-purple-500 to-pink-500',
   },
+  {
+    type: 'minimalist',
+    name: 'Minimalist',
+    description: 'Simple and elegant',
+    gradient: 'from-gray-400 to-gray-600',
+  },
+  {
+    type: 'executive',
+    name: 'Executive',
+    description: 'Professional leadership style',
+    gradient: 'from-slate-700 to-amber-600',
+  },
+  {
+    type: 'technical',
+    name: 'Technical',
+    description: 'Perfect for developers',
+    gradient: 'from-emerald-600 to-emerald-800',
+  },
+  {
+    type: 'elegant',
+    name: 'Elegant',
+    description: 'Refined and sophisticated',
+    gradient: 'from-rose-400 to-rose-600',
+  },
+  {
+    type: 'compact',
+    name: 'Compact',
+    description: 'Maximize content space',
+    gradient: 'from-indigo-500 to-indigo-700',
+  },
 ];
 
 const TemplateSelector = () => {
@@ -39,7 +69,7 @@ const TemplateSelector = () => {
         Choose a template that best represents your professional style.
       </p>
 
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {templates.map((template) => (
           <motion.button
             key={template.type}
