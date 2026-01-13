@@ -9,7 +9,7 @@ import ElegantTemplate from './ElegantTemplate';
 import CompactTemplate from './CompactTemplate';
 
 const ResumePreview = () => {
-  const { resumeData, selectedTemplate, fontSettings } = useResume();
+  const { resumeData, selectedTemplate } = useResume();
 
   const renderTemplate = () => {
     switch (selectedTemplate) {
@@ -36,27 +36,7 @@ const ResumePreview = () => {
 
   return (
     <div className="w-full overflow-auto bg-muted p-4 rounded-xl">
-      <div 
-        className="transform scale-[0.6] origin-top-left lg:scale-75 xl:scale-90"
-        style={{
-          '--resume-heading-font': fontSettings.headingFont,
-          '--resume-body-font': fontSettings.bodyFont,
-        } as React.CSSProperties}
-      >
-        <style>{`
-          #resume-content h1, 
-          #resume-content h2, 
-          #resume-content h3, 
-          #resume-content h4 {
-            font-family: var(--resume-heading-font), system-ui, sans-serif !important;
-          }
-          #resume-content p, 
-          #resume-content span, 
-          #resume-content li,
-          #resume-content div:not(:has(h1)):not(:has(h2)):not(:has(h3)):not(:has(h4)) {
-            font-family: var(--resume-body-font), system-ui, sans-serif;
-          }
-        `}</style>
+      <div className="transform scale-[0.6] origin-top-left lg:scale-75 xl:scale-90">
         {renderTemplate()}
       </div>
     </div>

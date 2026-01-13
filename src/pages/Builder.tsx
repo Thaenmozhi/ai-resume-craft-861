@@ -11,8 +11,6 @@ import ExperienceForm from '@/components/builder/ExperienceForm';
 import ProjectsForm from '@/components/builder/ProjectsForm';
 import CertificationsForm from '@/components/builder/CertificationsForm';
 import TemplateSelector from '@/components/builder/TemplateSelector';
-import FontSelector from '@/components/builder/FontSelector';
-import SavedResumesPanel from '@/components/builder/SavedResumesPanel';
 import ResumePreview from '@/components/templates/ResumePreview';
 import { useResume } from '@/context/ResumeContext';
 import { 
@@ -80,9 +78,6 @@ const Builder = () => {
           <div className="grid lg:grid-cols-5 gap-8">
             {/* Left Panel - Steps & Form */}
             <div className="lg:col-span-3 space-y-6">
-              {/* Saved Resumes Panel */}
-              <SavedResumesPanel />
-              
               {/* Step indicators */}
               <div className="flex flex-wrap gap-2">
                 {steps.map((step) => (
