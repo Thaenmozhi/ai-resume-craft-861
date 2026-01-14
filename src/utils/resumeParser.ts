@@ -2,8 +2,8 @@ import * as mammoth from 'mammoth';
 import * as pdfjs from 'pdfjs-dist';
 import { ResumeData, defaultResumeData } from '@/types/resume';
 
-// Set PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+// Set PDF.js worker - use unpkg for v5.x compatibility
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export type SupportedFileType = 'pdf' | 'docx' | 'doc' | 'txt' | 'rtf' | 'html';
 
