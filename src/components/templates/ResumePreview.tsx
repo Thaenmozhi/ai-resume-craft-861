@@ -35,8 +35,8 @@ const ResumePreview = () => {
   };
 
   return (
-    <div className="w-full overflow-auto bg-muted p-4 rounded-xl">
-      <div className="transform scale-[0.6] origin-top-left lg:scale-75 xl:scale-90">
+    <div className="w-full h-full overflow-auto bg-muted p-0 m-0 flex items-stretch justify-stretch">
+      <div className="w-full h-full transform scale-[0.6] origin-top-left lg:scale-75 xl:scale-90">
         {renderTemplate()}
       </div>
     </div>
