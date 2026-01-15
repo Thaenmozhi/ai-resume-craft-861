@@ -35,20 +35,9 @@ const ResumePreview = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-[500px] bg-muted p-3 rounded-xl flex items-center justify-center overflow-hidden">
-      {/* Fixed A4 aspect ratio container - size is FIXED, content scrolls inside */}
-      <div 
-        className="relative bg-white shadow-lg origin-center"
-        style={{
-          width: '210mm',
-          height: '297mm',
-          transform: 'scale(0.35)',
-          transformOrigin: 'center center',
-        }}
-      >
-        <div className="absolute inset-0 overflow-auto">
-          {renderTemplate()}
-        </div>
+    <div className="w-full h-full min-h-[600px] overflow-auto bg-muted p-2 rounded-xl flex items-start justify-center">
+      <div className="transform scale-[0.48] origin-top md:scale-[0.55] lg:scale-[0.65] xl:scale-[0.75] 2xl:scale-[0.85]">
+        {renderTemplate()}
       </div>
     </div>
   );
