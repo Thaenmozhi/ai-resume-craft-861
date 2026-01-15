@@ -114,13 +114,17 @@ const extractName = (text: string): string => {
 
 const extractSummary = (text: string): string => {
   const summaryPatterns = [
-    /(?:summary|profile|objective|about me)[:\s]*\n?([\s\S]*?)(?=\n(?:experience|education|skills|work|employment|projects)|\n\n)/i,
+    /(?:summary|professional summary|profile|objective|about me|career objective)[:\s]*\n?([\s\S]*?)(?=\n(?:experience|education|skills|work|employment|projects|technical|core competencies)|\n\n\n)/i,
   ];
   
   for (const pattern of summaryPatterns) {
     const match = text.match(pattern);
     if (match && match[1]) {
-      return match[1].trim().slice(0, 500);
+      const summaryText = match[1].trim();
+      // Validate it's actually a summary (longer than 20 chars, not just a list)
+      if (summaryText.length > 20 && !/^[•\-*]/.test(summaryText)) {
+        return summaryText.slice(0, 500);
+      }
     }
   }
   return '';
@@ -147,16 +151,28 @@ const extractSkills = (text: string): string[] => {
 };
 
 const extractLocation = (text: string): string => {
-  // Common location patterns
+  // Only look at the header/contact section (first ~10 lines) for location
+  const lines = text.split('\n').slice(0, 15).filter(line => line.trim().length > 0);
+  const headerText = lines.join('\n');
+  
+  // Strict location patterns - must be short and look like a location
   const locationPatterns = [
-    /([A-Za-z\s]+,\s*[A-Z]{2}(?:\s+\d{5})?)/,
-    /([A-Za-z\s]+,\s*[A-Za-z\s]+(?:,\s*[A-Za-z\s]+)?)/,
+    // City, STATE (e.g., "New York, NY" or "San Francisco, CA 94102")
+    /\b([A-Za-z][A-Za-z\s]{1,25},\s*[A-Z]{2}(?:\s+\d{5}(?:-\d{4})?)?)\b/,
+    // City, Country format (e.g., "London, UK" or "Toronto, Canada")
+    /\b([A-Za-z][A-Za-z\s]{1,20},\s*(?:USA|UK|Canada|India|Australia|Germany|France|Spain|Italy|Japan|China|Brazil|Mexico))\b/i,
+    // Just City, State with word boundaries
+    /\b([A-Za-z]{2,15}(?:\s[A-Za-z]{2,15})?,\s*[A-Z]{2})\b/,
   ];
   
   for (const pattern of locationPatterns) {
-    const match = text.match(pattern);
+    const match = headerText.match(pattern);
     if (match) {
-      return match[1].trim();
+      const location = match[1].trim();
+      // Validate: location should be short (under 40 chars) and not contain paragraph-like text
+      if (location.length < 40 && !location.includes('.') && !/\b(and|the|with|for|from)\b/i.test(location)) {
+        return location;
+      }
     }
   }
   return '';
@@ -238,8 +254,15 @@ const extractEducation = (text: string): Array<{
     // Check for GPA
     const gpaMatch = line.match(/GPA[:\s]*(\d+\.?\d*)/i);
 
-    if (hasDegree || isInstitution) {
-      // Start a new entry or update current
+    // Start a new entry when we see institution OR degree
+    if (isInstitution || hasDegree) {
+      // If we have a complete entry, save it and start fresh
+      if (currentEntry && currentEntry.institution && currentEntry.degree) {
+        entries.push({ ...currentEntry });
+        currentEntry = null;
+      }
+      
+      // Start new entry if none exists
       if (!currentEntry) {
         currentEntry = {
           id: generateId(),
@@ -251,22 +274,38 @@ const extractEducation = (text: string): Array<{
         };
       }
 
-      if (isInstitution && !currentEntry.institution) {
-        currentEntry.institution = line.replace(datePattern, '').trim();
+      // STRICT: Institution line goes to institution field ONLY
+      if (isInstitution) {
+        const institutionText = line.replace(datePattern, '').replace(/[,\s]*\d{4}[-–—]?\d{0,4}/g, '').trim();
+        if (!currentEntry.institution) {
+          currentEntry.institution = institutionText;
+        }
       }
 
+      // STRICT: Degree line - extract degree and field separately
       if (hasDegree) {
-        // Try to extract degree and field
-        const parts = line.split(/\s+in\s+/i);
-        if (parts.length > 1) {
-          currentEntry.degree = parts[0].trim();
-          currentEntry.field = parts[1].replace(datePattern, '').trim();
+        // Pattern: "Bachelor of Science in Computer Science" or "B.S. Computer Science"
+        const inPattern = /(.+?)\s+in\s+(.+)/i;
+        const inMatch = line.match(inPattern);
+        
+        if (inMatch) {
+          // Has "in" separator - first part is degree, second is field
+          currentEntry.degree = inMatch[1].replace(datePattern, '').trim();
+          currentEntry.field = inMatch[2].replace(datePattern, '').replace(/[,\s]*\d{4}.*/g, '').trim();
         } else {
+          // No "in" - the degree keyword IS the degree, rest might be field
           currentEntry.degree = degreeMatch;
-          // Rest of line might be field
-          const fieldPart = line.replace(degreeMatch, '').replace(datePattern, '').trim();
-          if (fieldPart && !currentEntry.field) {
-            currentEntry.field = fieldPart.replace(/^[,\s]+|[,\s]+$/g, '');
+          
+          // Extract field: everything after degree keyword, excluding dates
+          const afterDegree = line.substring(line.indexOf(degreeMatch) + degreeMatch.length);
+          const fieldPart = afterDegree
+            .replace(datePattern, '')
+            .replace(/[,\s]*\d{4}[-–—]?\d{0,4}/g, '')
+            .replace(/^[\s,\-–—of:]+/, '')
+            .trim();
+          
+          if (fieldPart && !currentEntry.field && fieldPart.length > 2 && fieldPart.length < 100) {
+            currentEntry.field = fieldPart;
           }
         }
       }
