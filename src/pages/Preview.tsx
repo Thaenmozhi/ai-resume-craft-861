@@ -7,6 +7,11 @@ import { useResume } from '@/context/ResumeContext';
 import ModernTemplate from '@/components/templates/ModernTemplate';
 import ClassicTemplate from '@/components/templates/ClassicTemplate';
 import CreativeTemplate from '@/components/templates/CreativeTemplate';
+import MinimalistTemplate from '@/components/templates/MinimalistTemplate';
+import ExecutiveTemplate from '@/components/templates/ExecutiveTemplate';
+import TechnicalTemplate from '@/components/templates/TechnicalTemplate';
+import ElegantTemplate from '@/components/templates/ElegantTemplate';
+import CompactTemplate from '@/components/templates/CompactTemplate';
 import ExportButtons from '@/components/builder/ExportButtons';
 import { ArrowLeft, Edit } from 'lucide-react';
 
@@ -21,6 +26,16 @@ const Preview = () => {
         return <ClassicTemplate data={resumeData} />;
       case 'creative':
         return <CreativeTemplate data={resumeData} />;
+      case 'minimalist':
+        return <MinimalistTemplate data={resumeData} />;
+      case 'executive':
+        return <ExecutiveTemplate data={resumeData} />;
+      case 'technical':
+        return <TechnicalTemplate data={resumeData} />;
+      case 'elegant':
+        return <ElegantTemplate data={resumeData} />;
+      case 'compact':
+        return <CompactTemplate data={resumeData} />;
       default:
         return <ModernTemplate data={resumeData} />;
     }
