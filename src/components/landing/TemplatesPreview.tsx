@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useResume } from '@/context/ResumeContext';
 
 const templates = [
   {
@@ -22,6 +23,15 @@ const templates = [
 ];
 
 const TemplatesPreview = () => {
+  const navigate = useNavigate();
+  const { resetToDefault } = useResume();
+
+  const handleGetStarted = () => {
+    // Reset to default when starting fresh from landing page
+    resetToDefault();
+    navigate('/builder');
+  };
+
   return (
     <section className="py-24 bg-muted/50">
       <div className="container px-4">
@@ -90,12 +100,10 @@ const TemplatesPreview = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center"
         >
-          <Link to="/builder">
-            <Button variant="hero" size="lg" className="gap-2">
-              Get Started Now
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+          <Button variant="hero" size="lg" className="gap-2" onClick={handleGetStarted}>
+            Get Started Now
+            <ArrowRight className="w-4 h-4" />
+          </Button>
         </motion.div>
       </div>
     </section>

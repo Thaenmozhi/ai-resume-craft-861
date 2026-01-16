@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { ResumeData, TemplateType, defaultResumeData } from '@/types/resume';
 
 interface ResumeContextType {
@@ -8,6 +8,9 @@ interface ResumeContextType {
   setSelectedTemplate: React.Dispatch<React.SetStateAction<TemplateType>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  isImported: boolean;
+  setIsImported: React.Dispatch<React.SetStateAction<boolean>>;
+  resetToDefault: () => void;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -16,6 +19,14 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('modern');
   const [currentStep, setCurrentStep] = useState(0);
+  const [isImported, setIsImported] = useState(false);
+
+  const resetToDefault = useCallback(() => {
+    setResumeData(defaultResumeData);
+    setSelectedTemplate('modern');
+    setCurrentStep(0);
+    setIsImported(false);
+  }, []);
 
   return (
     <ResumeContext.Provider
@@ -26,6 +37,9 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
         setSelectedTemplate,
         currentStep,
         setCurrentStep,
+        isImported,
+        setIsImported,
+        resetToDefault,
       }}
     >
       {children}

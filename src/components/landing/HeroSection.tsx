@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sparkles, ArrowRight, CheckCircle, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useResume } from '@/context/ResumeContext';
 
 const features = [
   'AI-powered content generation',
@@ -11,6 +12,15 @@ const features = [
 ];
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  const { resetToDefault } = useResume();
+
+  const handleStartBuilding = () => {
+    // Reset to default when starting fresh - this ensures imported data doesn't carry over
+    resetToDefault();
+    navigate('/builder');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
@@ -59,12 +69,10 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
           >
-            <Link to="/builder">
-              <Button variant="accent" size="xl" className="w-full sm:w-auto gap-2">
-                Start Building Free
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
+            <Button variant="accent" size="xl" className="w-full sm:w-auto gap-2" onClick={handleStartBuilding}>
+              Start Building Free
+              <ArrowRight className="w-5 h-5" />
+            </Button>
             <Link to="/import">
               <Button variant="heroOutline" size="xl" className="w-full sm:w-auto gap-2">
                 <Upload className="w-5 h-5" />
