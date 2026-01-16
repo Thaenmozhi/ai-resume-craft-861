@@ -1,9 +1,19 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useResume } from '@/context/ResumeContext';
 
 const CTASection = () => {
+  const navigate = useNavigate();
+  const { resetToDefault } = useResume();
+
+  const handleCreateResume = () => {
+    // Reset to default when starting fresh from landing page
+    resetToDefault();
+    navigate('/builder');
+  };
+
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 gradient-hero opacity-90" />
@@ -36,12 +46,10 @@ const CTASection = () => {
             with AI-crafted resumes.
           </p>
 
-          <Link to="/builder">
-            <Button variant="accent" size="xl" className="gap-2">
-              Create Your Resume
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </Link>
+          <Button variant="accent" size="xl" className="gap-2" onClick={handleCreateResume}>
+            Create Your Resume
+            <ArrowRight className="w-5 h-5" />
+          </Button>
         </motion.div>
       </div>
     </section>

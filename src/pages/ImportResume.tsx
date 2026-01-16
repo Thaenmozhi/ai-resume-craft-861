@@ -14,7 +14,7 @@ import Footer from '@/components/layout/Footer';
 const ImportResume = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { setResumeData, setCurrentStep } = useResume();
+  const { setResumeData, setCurrentStep, setIsImported } = useResume();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +40,9 @@ const ImportResume = () => {
       const parsedData = await parseResume(file);
       const completeData = mergeWithDefaults(parsedData);
       
+      // Set resume data and mark as imported - this ensures template selection won't reset it
       setResumeData(completeData);
+      setIsImported(true);
       setCurrentStep(0);
 
       toast({
