@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Sparkles, ArrowRight, CheckCircle, Upload } from 'lucide-react';
+import { Sparkles, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useResume } from '@/context/ResumeContext';
 
@@ -73,12 +73,6 @@ const HeroSection = () => {
               Start Building Free
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <Link to="/import">
-              <Button variant="heroOutline" size="xl" className="w-full sm:w-auto gap-2">
-                <Upload className="w-5 h-5" />
-                Import Resume
-              </Button>
-            </Link>
           </motion.div>
 
           <motion.div

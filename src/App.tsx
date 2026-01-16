@@ -7,7 +7,6 @@ import { ResumeProvider } from "@/context/ResumeContext";
 import Index from "./pages/Index";
 import Builder from "./pages/Builder";
 import Preview from "./pages/Preview";
-import ImportResume from "./pages/ImportResume";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,7 +22,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/builder" element={<Builder />} />
             <Route path="/preview" element={<Preview />} />
-            <Route path="/import" element={<ImportResume />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
